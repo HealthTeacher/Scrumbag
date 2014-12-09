@@ -1,8 +1,15 @@
 define [
-  "app",
+  "app"
+  "collections/projects_collection"
   "views/projects/item_view"
-], (app, ProjectItemView) ->
-  Backbone.Marionette.CollectionView.extend
-    childView: ProjectItemView
+  "hbs!templates/project_select"
+], (App, ProjectsCollection, ProjectItemView, tpl) ->
+  Backbone.Marionette.CompositeView.extend
+    template: tpl
 
+    childView: ProjectItemView
+    childViewContainer: "#js-project-list"
+
+    triggers:
+      "click": "showProject"
 

@@ -11,7 +11,7 @@
       storeToken: function(e) {
         e.preventDefault();
         app.apiToken = this.ui.apiToken.val();
-        if (app.appToken) {
+        if (app.apiToken) {
           return this.trigger("appToken:saved");
         }
       }

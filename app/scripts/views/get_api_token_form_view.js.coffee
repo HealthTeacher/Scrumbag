@@ -14,6 +14,6 @@ define [
     storeToken: (e) ->
       e.preventDefault()
       app.apiToken = @ui.apiToken.val()
-      if app.appToken
+      if app.apiToken
         @trigger("appToken:saved")
 
