@@ -235,4 +235,12 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+#loader {
+  position: relative; }
+  #loader li {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0; }
+
 /*# sourceMappingURL=main.css.map */

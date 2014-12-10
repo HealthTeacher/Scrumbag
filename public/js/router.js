@@ -3,7 +3,8 @@
     return Marionette.AppRouter.extend({
       controller: new MainController,
       appRoutes: {
-        "": "getApiToken"
+        "": "getApiToken",
+        "/projects": "projectsList"
       }
     });
   });

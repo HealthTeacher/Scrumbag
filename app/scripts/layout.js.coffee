@@ -3,10 +3,10 @@ define [
   "collections/projects_collection"
   "views/get_api_token_form_view"
   "views/project_select_view"
-  "views/projects/show_view"
+  "views/projects/show_layout"
   "hbs!templates/layout"
 ], (App, ProjectsCollection,GetApiTokenFormView, ProjectSelectView,
-    ProjectShowView, tpl) ->
+    ProjectShowLayout, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -21,6 +21,7 @@ define [
         @showProject(project)
 
     getApiToken: ->
+      App.navigate("/enter-api-token")
       App.apiToken = "a0368d3b83b45aa779295fd4b26af4a4"
       getTokenView = new GetApiTokenFormView
       @main_content.show(getTokenView)
@@ -29,6 +30,7 @@ define [
         @fetchProjects()
 
     fetchProjects: ->
+      App.navigate("/projects")
       $.ajax
         url: "https://www.pivotaltracker.com/services/v5/projects"
         dataType: "json"
@@ -46,6 +48,7 @@ define [
       @main_content.show(projectSelectView)
 
     showProject: (project) ->
-      view = new ProjectShowView
+      App.navigate("/projects/#{project.id}")
+      view = new ProjectShowLayout
         model: project
       @main_content.show view

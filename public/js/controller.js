@@ -1,15 +1,19 @@
 (function() {
   define(["app", "marionette", "layout"], function(app, Marionette, MainLayout) {
     return Marionette.Controller.extend({
+      initialize: function() {
+        this.layout = new MainLayout;
+        return app.main.show(this.layout);
+      },
       getApiToken: function() {
-        var layout;
-        layout = new MainLayout;
-        app.main.show(layout);
         if (app.apiToken) {
-          return layout.fetchProjects();
+          return this.layout.fetchProjects();
         } else {
-          return layout.getApiToken();
+          return this.layout.getApiToken();
         }
+      },
+      projectsList: function() {
+        return this.layout.fetchProjects();
       }
     });
   });

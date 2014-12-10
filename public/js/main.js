@@ -4,10 +4,11 @@
     paths: {
       app: "app",
       backbone: "vendor/backbone/backbone",
-      underscore: "vendor/underscore/underscore",
+      hbs: "vendor/require-handlebars-plugin/hbs",
       jquery: "vendor/jquery/dist/jquery",
       marionette: "vendor/marionette/lib/backbone.marionette",
-      hbs: "vendor/require-handlebars-plugin/hbs"
+      moment: "vendor/moment/moment",
+      underscore: "vendor/underscore/underscore"
     },
     shim: {
       jquery: {
@@ -23,6 +24,9 @@
       marionette: {
         deps: ["jquery", "underscore", "backbone"],
         exports: "Marionette"
+      },
+      moment: {
+        exports: "moment"
       }
     }
   });

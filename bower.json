@@ -1,15 +1,16 @@
 {
-  "name": "loose-lucy-backbone",
+  "name": "scrum-updater",
   "version": "0.0.1",
   "authors": [
     "Steven Warren <steven@stevencwarren.com>"
   ],
   "private": true,
-  "directory": "js/vendor",
+  "directory": "public/js//vendor",
   "dependencies": {
     "marionette": "2.2.2",
     "jasmine": "~2.0.4",
-    "require-handlebars-plugin": "latest"
+    "require-handlebars-plugin": "latest",
+    "moment": "latest"
   },
   "ignore": [
     "**/.*",

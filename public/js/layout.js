@@ -1,5 +1,5 @@
 (function() {
-  define(["App", "collections/projects_collection", "views/get_api_token_form_view", "views/project_select_view", "views/projects/show_view", "hbs!templates/layout"], function(App, ProjectsCollection, GetApiTokenFormView, ProjectSelectView, ProjectShowView, tpl) {
+  define(["App", "collections/projects_collection", "views/get_api_token_form_view", "views/project_select_view", "views/projects/show_layout", "hbs!templates/layout"], function(App, ProjectsCollection, GetApiTokenFormView, ProjectSelectView, ProjectShowLayout, tpl) {
     return Marionette.LayoutView.extend({
       template: tpl,
       id: "layout",
@@ -16,6 +16,7 @@
       },
       getApiToken: function() {
         var getTokenView;
+        App.navigate("/enter-api-token");
         App.apiToken = "a0368d3b83b45aa779295fd4b26af4a4";
         getTokenView = new GetApiTokenFormView;
         this.main_content.show(getTokenView);
@@ -26,6 +27,7 @@
         })(this));
       },
       fetchProjects: function() {
+        App.navigate("/projects");
         return $.ajax({
           url: "https://www.pivotaltracker.com/services/v5/projects",
           dataType: "json",
@@ -53,7 +55,8 @@
       },
       showProject: function(project) {
         var view;
-        view = new ProjectShowView({
+        App.navigate("/projects/" + project.id);
+        view = new ProjectShowLayout({
           model: project
         });
         return this.main_content.show(view);

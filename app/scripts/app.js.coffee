@@ -7,11 +7,15 @@ define [
     main: "#main-wrapper"
 
   app.addInitializer (options) ->
-    Backbone.history.start()
+    Backbone.history.start({pushState: true})
 
   window.app = app
 
   app.apiToken = localStorage["apiToken"]
+
+  app.navigate = (route,  options) ->
+    options || (options = {})
+    Backbone.history.navigate(route, options)
 
   return app
 
