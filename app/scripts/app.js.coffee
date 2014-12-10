@@ -11,5 +11,7 @@ define [
 
   window.app = app
 
+  app.apiToken = localStorage["apiToken"]
+
   return app
 

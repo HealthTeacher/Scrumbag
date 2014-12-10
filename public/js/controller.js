@@ -5,7 +5,11 @@
         var layout;
         layout = new MainLayout;
         app.main.show(layout);
-        return layout.getApiToken();
+        if (app.apiToken) {
+          return layout.fetchProjects();
+        } else {
+          return layout.getApiToken();
+        }
       }
     });
   });

@@ -8,4 +8,7 @@ define [
     getApiToken: ->
       layout = new MainLayout
       app.main.show(layout)
-      layout.getApiToken()
+      if app.apiToken
+        layout.fetchProjects()
+      else
+        layout.getApiToken()

@@ -15,5 +15,6 @@ define [
       e.preventDefault()
       app.apiToken = @ui.apiToken.val()
       if app.apiToken
+        localStorage.setItem("apiToken", app.apiToken)
         @trigger("appToken:saved")
 

@@ -9,6 +9,7 @@
       return Backbone.history.start();
     });
     window.app = app;
+    app.apiToken = localStorage["apiToken"];
     return app;
   });
 
