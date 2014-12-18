@@ -29,7 +29,6 @@ define [
         beforeSend: (xhr) ->
           xhr.setRequestHeader('X-TrackerToken', App.apiToken)
         success: (response) =>
-          debugger
         error: (response, status) =>
          debugger
 

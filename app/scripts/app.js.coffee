@@ -1,21 +1,21 @@
 define [
   "marionette"
 ], (Marionette) ->
-  app = new Marionette.Application()
+  App = new Marionette.Application()
 
-  app.addRegions
+  App.addRegions
     main: "#main-wrapper"
 
-  app.addInitializer (options) ->
+  App.addInitializer (options) ->
     Backbone.history.start({pushState: true})
 
-  window.app = app
+  window.app = App
 
-  app.apiToken = localStorage["apiToken"]
+  App.apiToken = localStorage["apiToken"]
 
-  app.navigate = (route,  options) ->
+  App.navigate = (route,  options) ->
     options || (options = {})
     Backbone.history.navigate(route, options)
 
-  return app
+  return App
 
