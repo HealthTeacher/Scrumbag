@@ -25,7 +25,9 @@
             return xhr.setRequestHeader('X-TrackerToken', App.apiToken);
           },
           success: (function(_this) {
-            return function(response) {};
+            return function(response) {
+              return console.log(response);
+            };
           })(this),
           error: (function(_this) {
             return function(response, status) {

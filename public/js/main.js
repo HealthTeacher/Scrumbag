@@ -1,6 +1,6 @@
 (function() {
   require.config({
-    baseUrl: "js",
+    baseUrl: "/js",
     paths: {
       app: "app",
       backbone: "vendor/backbone/backbone",

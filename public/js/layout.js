@@ -1,5 +1,5 @@
 (function() {
-  define(["App", "collections/projects_collection", "views/get_api_token_form_view", "views/project_select_view", "views/projects/show_layout", "hbs!templates/layout"], function(App, ProjectsCollection, GetApiTokenFormView, ProjectSelectView, ProjectShowLayout, tpl) {
+  define(["app", "moment", "collections/activity_collection", "collections/project_memberships_collection", "views/get_api_token_form_view", "views/feed_view", "hbs!templates/layout"], function(App, moment, ActivityCollection, ProjectMembershipsCollection, GetApiTokenFormView, FeedView, tpl) {
     return Marionette.LayoutView.extend({
       template: tpl,
       id: "layout",
@@ -14,52 +14,58 @@
           };
         })(this));
       },
-      getApiToken: function() {
-        var getTokenView;
-        App.navigate("/enter-api-token");
-        App.apiToken = "a0368d3b83b45aa779295fd4b26af4a4";
-        getTokenView = new GetApiTokenFormView;
-        this.main_content.show(getTokenView);
-        return getTokenView.on("appToken:saved", (function(_this) {
-          return function() {
-            return _this.fetchProjects();
-          };
-        })(this));
-      },
-      fetchProjects: function() {
-        App.navigate("/projects");
-        return $.ajax({
-          url: "https://www.pivotaltracker.com/services/v5/projects",
-          dataType: "json",
+      index: function() {
+        var feed, feedView, memberships;
+        App.memberships = memberships = new ProjectMembershipsCollection();
+        App.users = new Backbone.Collection();
+        memberships.projectId = 637543;
+        feed = new ActivityCollection();
+        feedView = new FeedView({
+          collection: feed
+        });
+        this.main_content.show(feedView);
+        return memberships.fetch({
           beforeSend: function(xhr) {
             return xhr.setRequestHeader('X-TrackerToken', App.apiToken);
           },
           success: (function(_this) {
-            return function(response) {
-              return _this.showProjectSelectView(response);
+            return function(collection) {
+              var people;
+              people = collection.pluck("person");
+              App.users.reset(people);
+              return feed.fetch({
+                data: {
+                  occurred_after: _this.startOfDay(),
+                  limit: 30
+                },
+                beforeSend: function(xhr) {
+                  return xhr.setRequestHeader('X-TrackerToken', App.apiToken);
+                },
+                success: function(collection) {},
+                error: function() {
+                  return console.log("error!");
+                }
+              });
             };
           })(this),
-          error: (function(_this) {
-            return function(response, status) {
-              debugger;
-            };
-          })(this)
+          error: function() {
+            return console.log("error!");
+          }
         });
       },
-      showProjectSelectView: function(response) {
-        var projectSelectView;
-        projectSelectView = new ProjectSelectView({
-          collection: new ProjectsCollection(response)
-        });
-        return this.main_content.show(projectSelectView);
+      getApiToken: function() {
+        var getTokenView;
+        getTokenView = new GetApiTokenFormView;
+        this.main_content.show(getTokenView);
+        return getTokenView.on("appToken:saved", (function(_this) {
+          return function(token) {
+            App.apiToken = token;
+            return _this.index();
+          };
+        })(this));
       },
-      showProject: function(project) {
-        var view;
-        App.navigate("/projects/" + project.id);
-        view = new ProjectShowLayout({
-          model: project
-        });
-        return this.main_content.show(view);
+      startOfDay: function() {
+        return moment().subtract(1, "days").startOf('day').toISOString();
       }
     });
   });

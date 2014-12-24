@@ -12,3 +12,37 @@
   }
 }
 
+#view-feed-view {
+  @include outer-container;
+  article {
+    @include span-columns(12);
+    background: #efefef;
+    border: 1px solid #aaa;
+    .item-info {
+      padding: .5em;
+    }
+  }
+
+  h6 {
+    margin-left: 0.5em;
+  }
+
+  ul.list-changes {
+    li {
+      @include outer-container;
+    }
+    .change-property-name {
+      @include span-columns(2);
+      text-align: right;
+      font-weight: bold;
+    }
+    .change-property-value{
+      @include span-columns(10);
+    }
+
+    i {
+      margin: 0 .5em;
+    }
+
+  }
+}

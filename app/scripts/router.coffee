@@ -3,7 +3,5 @@ define ["app", "controller"], (app, MainController) ->
     controller: new MainController
 
     appRoutes: {
-      "": "getApiToken"
-      "/projects": "projectsList"
-      #"/projects/:id" :"showProject"
+      "": "index"
     }

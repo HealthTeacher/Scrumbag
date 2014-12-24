@@ -1,5 +1,5 @@
 (function() {
-  define(["app", "hbs!templates/get_api_token"], function(app, tpl) {
+  define(["app", "hbs!templates/get_api_token"], function(App, tpl) {
     return Backbone.Marionette.ItemView.extend({
       template: tpl,
       ui: {
@@ -10,10 +10,10 @@
       },
       storeToken: function(e) {
         e.preventDefault();
-        app.apiToken = this.ui.apiToken.val();
-        if (app.apiToken) {
-          localStorage.setItem("apiToken", app.apiToken);
-          return this.trigger("appToken:saved");
+        App.apiToken = this.ui.apiToken.val();
+        if (App.apiToken) {
+          localStorage.setItem("apiToken", App.apiToken);
+          return this.trigger("appToken:saved", App.apiToken);
         }
       }
     });

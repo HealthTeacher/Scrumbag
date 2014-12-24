@@ -1,12 +1,12 @@
 define [
-  "App",
-  "collections/projects_collection"
+  "app",
+  "moment"
+  "collections/activity_collection"
+  "collections/project_memberships_collection"
   "views/get_api_token_form_view"
-  "views/project_select_view"
-  "views/projects/show_layout"
+  "views/feed_view"
   "hbs!templates/layout"
-], (App, ProjectsCollection,GetApiTokenFormView, ProjectSelectView,
-    ProjectShowLayout, tpl) ->
+], (App, moment, ActivityCollection, ProjectMembershipsCollection, GetApiTokenFormView, FeedView, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -20,35 +20,42 @@ define [
       App.commands.setHandler "show:project", (project) =>
         @showProject(project)
 
+    index: ->
+      App.memberships = memberships = new ProjectMembershipsCollection()
+      App.users = new Backbone.Collection()
+      memberships.projectId = 637543
+
+      feed = new ActivityCollection()
+
+      feedView = new FeedView(collection: feed)
+      @main_content.show(feedView)
+
+      memberships.fetch
+        beforeSend: (xhr) ->
+          xhr.setRequestHeader('X-TrackerToken', App.apiToken)
+        success: (collection) =>
+          people = collection.pluck("person")
+          App.users.reset(people)
+          feed.fetch
+            data:
+              occurred_after: @startOfDay()
+              limit: 30
+            beforeSend: (xhr) ->
+              xhr.setRequestHeader('X-TrackerToken', App.apiToken)
+            success: (collection) ->
+              #console.log(collection)
+            error: ->
+              console.log("error!")
+        error: ->
+          console.log("error!")
+
     getApiToken: ->
-      App.navigate("/enter-api-token")
-      App.apiToken = "a0368d3b83b45aa779295fd4b26af4a4"
       getTokenView = new GetApiTokenFormView
       @main_content.show(getTokenView)
 
-      getTokenView.on "appToken:saved", =>
-        @fetchProjects()
+      getTokenView.on "appToken:saved", (token) =>
+        App.apiToken = token
+        @index()
 
-    fetchProjects: ->
-      App.navigate("/projects")
-      $.ajax
-        url: "https://www.pivotaltracker.com/services/v5/projects"
-        dataType: "json"
-        beforeSend: (xhr) ->
-          xhr.setRequestHeader('X-TrackerToken', App.apiToken)
-        success: (response) =>
-          @showProjectSelectView(response)
-        error: (response, status) =>
-         debugger
-
-
-    showProjectSelectView: (response) ->
-      projectSelectView = new ProjectSelectView
-        collection: new ProjectsCollection(response)
-      @main_content.show(projectSelectView)
-
-    showProject: (project) ->
-      App.navigate("/projects/#{project.id}")
-      view = new ProjectShowLayout
-        model: project
-      @main_content.show view
+    startOfDay: ->
+      moment().subtract(1, "days").startOf('day').toISOString()

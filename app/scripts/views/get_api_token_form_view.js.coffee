@@ -1,7 +1,7 @@
 define [
   "app",
   "hbs!templates/get_api_token"
-], (app, tpl) ->
+], (App, tpl) ->
   Backbone.Marionette.ItemView.extend
     template: tpl
 
@@ -13,8 +13,7 @@ define [
 
     storeToken: (e) ->
       e.preventDefault()
-      app.apiToken = @ui.apiToken.val()
-      if app.apiToken
-        localStorage.setItem("apiToken", app.apiToken)
-        @trigger("appToken:saved")
-
+      App.apiToken = @ui.apiToken.val()
+      if App.apiToken
+        localStorage.setItem("apiToken", App.apiToken)
+        @trigger("appToken:saved", App.apiToken)

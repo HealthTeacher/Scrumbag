@@ -243,4 +243,52 @@ html {
     top: 0;
     opacity: 0; }
 
+#view-feed-view {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto; }
+  #view-feed-view:after {
+    content: "";
+    display: table;
+    clear: both; }
+  #view-feed-view article {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 100%;
+    background: #efefef;
+    border: 1px solid #aaa; }
+    #view-feed-view article:last-child {
+      margin-right: 0; }
+    #view-feed-view article .item-info {
+      padding: .5em; }
+  #view-feed-view h6 {
+    margin-left: 0.5em; }
+  #view-feed-view ul.list-changes li {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto; }
+    #view-feed-view ul.list-changes li:after {
+      content: "";
+      display: table;
+      clear: both; }
+  #view-feed-view ul.list-changes .change-property-name {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%;
+    text-align: right;
+    font-weight: bold; }
+    #view-feed-view ul.list-changes .change-property-name:last-child {
+      margin-right: 0; }
+  #view-feed-view ul.list-changes .change-property-value {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 82.94039%; }
+    #view-feed-view ul.list-changes .change-property-value:last-child {
+      margin-right: 0; }
+  #view-feed-view ul.list-changes i {
+    margin: 0 .5em; }
+
 /*# sourceMappingURL=main.css.map */
