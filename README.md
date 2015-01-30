@@ -17,3 +17,27 @@ Remembers what you did yesterday so you don't have to
 ## Usage
 
 * enter your Pivotal Tracker API Token
+
+## Hacking on Scrumbag
+
+Make code changes in `./src` and they will be compiled to `./app` via the `watch` task.
+
+```bash
+grunt watch
+```
+
+## Running the built in webserver
+
+Scrumbag ships with a simple static site server via Express:
+
+```bash
+grunt build
+npm start
+```
+
+The site will served out of `./app` and be available at `http://localhost:8080`
+
+
+## License
+
+MIT
