@@ -22,7 +22,6 @@
     "moment": "latest",
     "requirejs": "latest",
     "require-handlebars-plugin": "latest",
-    "underscore": "~1.7.0",
     "jquery": "~2.1.1"
   }
 }
