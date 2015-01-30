@@ -2,7 +2,8 @@
   "name": "scrum hellper",
   "version": "0.0.0a",
   "authors": [
-    "Mark Wise <markmediadude@gmail.com>"
+    "Mark Wise <markmediadude@gmail.com>",
+    "Steven Warren <steven@stevencwarren.com>"
   ],
   "main": "css/main.css",
   "moduleType": [

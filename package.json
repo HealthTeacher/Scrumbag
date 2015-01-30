@@ -1,7 +1,7 @@
 {
   "name": "template-grunt-bower-requirejs",
   "version": "0.0.0b",
-  "repository": "https://github.com/bmcorser/grunt-bower-requirejs.git",
+  "repository": "https://github.com/mwise/scrum_updater.git",
   "description": "Scrum update helper",
   "devDependencies": {
     "bower": "^1.3.12",
