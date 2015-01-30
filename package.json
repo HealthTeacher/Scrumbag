@@ -18,5 +18,9 @@
     "jshint": "~2.5.6",
     "jshint-stylish": "1.0.0",
     "requirejs": "~2.1.14"
+  },
+  "scripts": {
+    "install": "bower install; cd server; npm install; cd ..",
+    "start": "node server/server.js"
   }
 }

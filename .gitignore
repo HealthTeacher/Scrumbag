@@ -2,6 +2,7 @@
 .ruby-gemset
 .ruby-version
 .sass-cache
+**/*/npm-debug.log
 _build
 lib
 node_modules
