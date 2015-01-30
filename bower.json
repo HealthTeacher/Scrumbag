@@ -1,23 +1,27 @@
 {
-  "name": "scrum-updater",
-  "version": "0.0.1",
+  "name": "scrum hellper",
+  "version": "0.0.0a",
   "authors": [
-    "Steven Warren <steven@stevencwarren.com>"
+    "Mark Wise <markmediadude@gmail.com>"
   ],
-  "private": true,
-  "directory": "public/js/vendor",
-  "dependencies": {
-    "marionette": "2.2.2",
-    "jasmine": "~2.0.4",
-    "require-handlebars-plugin": "latest",
-    "moment": "latest"
-  },
+  "main": "css/main.css",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "app/scripts/vendor",
+    "lib",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "marionette": "2.2.2",
+    "moment": "latest",
+    "requirejs": "latest",
+    "require-handlebars-plugin": "latest",
+    "underscore": "~1.7.0",
+    "jquery": "~2.1.1"
+  }
 }
