@@ -3,7 +3,10 @@ APP_DIR = './app'
 path = require('path')
 
 module.exports = (grunt) ->
+
   grunt.initConfig
+    secret: grunt.file.readJSON('secret.json')
+
     coffee:
       glob_to_multiple:
         expand: true
@@ -24,15 +27,15 @@ module.exports = (grunt) ->
     requirejs:
       compile:
         options:
+          mainConfigFile: "app/js/config.js",
           baseUrl: './app/js'
-          dir: path.join(BUILD_DIR, 'js')
           optimize: 'uglify'
+          name: "main"
+          out: '_build/js/main.js'
 
     watch:
       js:
-        files: [
-          './src/js/**/*'
-        ]
+        files: ['./src/js/**/*']
         tasks: ["coffee", "bower"]
         options:
           reload: true
@@ -46,9 +49,7 @@ module.exports = (grunt) ->
           reload: true
           spawn: false
       indexTemplate:
-        files: [
-          './src/index.html'
-        ]
+        files: ['./src/index.html']
         tasks: ["copy:indexTemplateDev"]
         options:
           reload: true
@@ -68,12 +69,15 @@ module.exports = (grunt) ->
           transitive: true
 
     copy:
-      lib:
+      requirejs:
         expand: true
-        src: [
-          './lib/**/*.js',
-          './lib/**/*.map'
-        ]
+        flatten: false
+        src: ['./lib/requirejs/require.js']
+        dest: path.join(BUILD_DIR, 'js')
+      config:
+        expand: true
+        flatten: true
+        src: ['./app/js/config.js']
         dest: path.join(BUILD_DIR, 'js')
       libDev:
         expand: true
@@ -120,6 +124,17 @@ module.exports = (grunt) ->
           ext: '.css'
         }]
 
+    rsync:
+      options:
+        args: ['--verbose']
+        recursive: true
+      production:
+        options:
+          src: './_build/*'
+          dest: '<%= secret.deploy.production.deploy_path %>'
+          host: '<%= secret.deploy.production.username%>@<%= secret.deploy.production.host %>',
+          delete: true # be careful with this! Double-check your deploy path!
+
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-bower-requirejs')
@@ -127,6 +142,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-sass')
   grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-rsync')
 
   grunt.registerTask('build', [
     'coffee'
@@ -137,4 +153,4 @@ module.exports = (grunt) ->
     'copy'
   ])
 
-  grunt.registerTask('build:dev', [ ])
+  grunt.registerTask('deploy', ['build', 'rsync'])

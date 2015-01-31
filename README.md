@@ -37,6 +37,13 @@ npm start
 
 The site will served out of `./app` and be available at `http://localhost:8080`
 
+## Deployment
+
+Deployment is done via the grunt-rsync plugin.
+
+* copy `secret.dist.json` to `secret.json`
+* update values in `secret.json`
+* `grunt deploy`
 
 ## License
 
