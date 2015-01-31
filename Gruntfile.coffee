@@ -50,13 +50,13 @@ module.exports = (grunt) ->
           spawn: false
       indexTemplate:
         files: ['./src/index.html']
-        tasks: ["copy:indexTemplateDev"]
+        tasks: ["copy:htmlToApp"]
         options:
           reload: true
           spawn: false
       templates:
         files: ['./src/templates/**/*']
-        tasks: ["copy:templatesDev"]
+        tasks: ["copy:templatesToApp"]
         options:
           reload: true
           spawn: false
@@ -69,6 +69,24 @@ module.exports = (grunt) ->
           transitive: true
 
     copy:
+      libToApp:
+        expand: true
+        src: [
+          './lib/**/*.js',
+          './lib/**/*.map'
+        ]
+        dest: path.join(APP_DIR, 'js')
+      htmlToApp:
+        expand: true
+        flatten: true
+        src: './src/index.html'
+        dest: './app'
+      templatesToApp:
+        expand: true
+        flatten: false
+        cwd: "./src/templates"
+        src: '**/*'
+        dest: './app/js/templates'
       requirejs:
         expand: true
         flatten: false
@@ -79,24 +97,6 @@ module.exports = (grunt) ->
         flatten: true
         src: ['./app/js/config.js']
         dest: path.join(BUILD_DIR, 'js')
-      libDev:
-        expand: true
-        src: [
-          './lib/**/*.js',
-          './lib/**/*.map'
-        ]
-        dest: path.join(APP_DIR, 'js')
-      indexTemplateDev:
-        expand: true
-        flatten: true
-        src: './src/index.html'
-        dest: './app'
-      templatesDev:
-        expand: true
-        flatten: false
-        cwd: "./src/templates"
-        src: '**/*'
-        dest: './app/js/templates'
       indexTemplate:
         expand: true
         flatten: true
@@ -144,13 +144,28 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-rsync')
 
+  grunt.registerTask "copyApp", [
+    "copy:libToApp"
+    "copy:htmlToApp"
+    "copy:templatesToApp"
+  ]
+
+  grunt.registerTask "copyBuild", [
+    "copy:requirejs"
+    "copy:config"
+    "copy:indexTemplate"
+    "copy:templates"
+    "copy:styles"
+  ]
+
   grunt.registerTask('build', [
     'coffee'
     'sass'
+    'copyApp'
     'bower'
     'jshint'
     'requirejs'
-    'copy'
+    'copyBuild'
   ])
 
   grunt.registerTask('deploy', ['build', 'rsync'])

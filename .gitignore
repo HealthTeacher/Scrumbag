@@ -4,6 +4,7 @@
 .sass-cache
 **/*/npm-debug.log
 _build
+app
 lib
 node_modules
 secret.json
