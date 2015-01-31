@@ -1,5 +1,6 @@
 define [
   "marionette"
+  "extensions/marionette"
 ], (Marionette) ->
   App = new Marionette.Application()
 

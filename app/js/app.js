@@ -1,5 +1,5 @@
 (function() {
-  define(["marionette"], function(Marionette) {
+  define(["marionette", "extensions/marionette"], function(Marionette) {
     var App;
     App = new Marionette.Application();
     App.addRegions({

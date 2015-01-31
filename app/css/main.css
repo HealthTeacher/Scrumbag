@@ -268,3 +268,8 @@ html {
       margin-right: 0; }
   #view-feed-view ul.list-changes i {
     margin: 0 0.5em; }
+  #view-feed-view .occurred-at {
+    font-size: 0.75em;
+    font-style: italic;
+    text-align: right;
+    margin: 0.5em; }

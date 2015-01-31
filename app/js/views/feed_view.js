@@ -1,5 +1,5 @@
 (function() {
-  define(["app", "helpers/change_formatter", "hbs!templates/feed/item", "hbs!templates/feed/story"], function(App, ChangeFormatter, itemTpl, storyTpl) {
+  define(["app", "moment", "helpers/change_formatter", "hbs!templates/feed/item", "hbs!templates/feed/story"], function(App, moment, ChangeFormatter, itemTpl, storyTpl) {
     var FeedItemView;
     FeedItemView = Backbone.Marionette.ItemView.extend({
       template: function(serializedModel) {
@@ -17,6 +17,13 @@
         })();
         serializedModel.story_summary = storyTpl(story);
         return itemTpl(serializedModel);
+      },
+      templateHelpers: function() {
+        return {
+          occurredAt: function() {
+            return moment(this.model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a");
+          }
+        };
       },
       initialize: function(opts) {
         return this.model.set("formatted_changes", ChangeFormatter.format(this.model.get("changes"), App.users));

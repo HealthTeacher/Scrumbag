@@ -1,9 +1,10 @@
 define [
   "app"
+  "moment"
   "helpers/change_formatter"
   "hbs!templates/feed/item"
   "hbs!templates/feed/story"
-], (App, ChangeFormatter, itemTpl, storyTpl) ->
+], (App, moment, ChangeFormatter, itemTpl, storyTpl) ->
 
   FeedItemView = Backbone.Marionette.ItemView.extend
     template: (serializedModel) ->
@@ -19,7 +20,14 @@ define [
       serializedModel.story_summary = storyTpl(story)
       itemTpl(serializedModel)
 
+    templateHelpers:->
+      {
+        occurredAt: ->
+          moment(@model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a")
+      }
+
     initialize: (opts) ->
+      #console.log(@model.attributes)
       @model.set("formatted_changes",
         ChangeFormatter.format(@model.get("changes"), App.users))
 
