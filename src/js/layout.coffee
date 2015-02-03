@@ -42,7 +42,7 @@ define [
           feed.fetch
             data:
               occurred_after: @startOfDay()
-              limit: 30
+              limit: 100
             beforeSend: (xhr) ->
               xhr.setRequestHeader('X-TrackerToken', App.apiToken)
             success: (collection) =>
