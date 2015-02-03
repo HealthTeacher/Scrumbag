@@ -1,6 +1,8 @@
 # Scrumbag
 
-Remembers what you did yesterday so you don't have to
+Remembers what you did yesterday so you don't have to. 
+
+![alt tag](http://i.imgur.com/dKAE2wA.png)
 
 ## Requirements
 
