@@ -5,8 +5,10 @@ define [
   "collections/project_memberships_collection"
   "views/get_api_token_form_view"
   "views/feed_view"
+  "views/filter_view"
   "hbs!templates/layout"
-], (App, moment, ActivityCollection, ProjectMembershipsCollection, GetApiTokenFormView, FeedView, tpl) ->
+], (App, moment, ActivityCollection, ProjectMembershipsCollection, GetApiTokenFormView, FeedView,
+  FilterView, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -15,6 +17,7 @@ define [
     regions:
       header: "#header"
       main_content: "#main"
+      sidebar_content: "#sidebar"
 
     onRender: ->
       App.commands.setHandler "show:project", (project) =>
@@ -25,9 +28,9 @@ define [
       App.users = new Backbone.Collection()
       memberships.projectId = 637543
 
-      feed = new ActivityCollection()
+      App.feed = feed = new ActivityCollection()
 
-      feedView = new FeedView(collection: feed)
+      feedView = @feedView = new FeedView(collection: feed)
       @main_content.show(feedView)
 
       memberships.fetch
@@ -42,12 +45,33 @@ define [
               limit: 30
             beforeSend: (xhr) ->
               xhr.setRequestHeader('X-TrackerToken', App.apiToken)
-            success: (collection) ->
-              #console.log(collection)
+            success: (collection) =>
+              @buildFilters()
             error: ->
               console.log("error!")
         error: ->
           console.log("error!")
+
+    buildFilters: ->
+      resources = App.feed.pluck("primary_resources")
+      resources = _.flatten(resources)
+      stories = _(resources).select (resource) ->
+        resource.kind == "story"
+      filterCollection = new Backbone.Collection(stories)
+      filterView = new FilterView(collection: filterCollection)
+      @sidebar_content.show(filterView)
+
+      filterView.on "filter-story", (id) =>
+        @filterFeed(id)
+
+      filterView.on "clear-filters", (id) =>
+        @clearFilters()
+
+    clearFilters: ->
+      @feedView.showAll()
+
+    filterFeed: (storyId) ->
+      @feedView.filterByStoryId(storyId)
 
     getApiToken: ->
       getTokenView = new GetApiTokenFormView

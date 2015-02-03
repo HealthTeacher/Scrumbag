@@ -27,7 +27,6 @@ define [
       }
 
     initialize: (opts) ->
-      #console.log(@model.attributes)
       @model.set("formatted_changes",
         ChangeFormatter.format(@model.get("changes"), App.users))
 
@@ -39,3 +38,15 @@ define [
   Backbone.Marionette.CollectionView.extend
     id: "view-feed-view"
     childView: FeedItemView
+
+    showAll: ->
+      @children.each (childView) ->
+        childView.$el.show()
+
+    filterByStoryId: (storyId) ->
+      @showAll()
+      items = App.feed.withStoryId(storyId)
+      ids = _(items).map (model) -> model.get("guid")
+      @children.each (childView) ->
+        unless _(ids).contains(childView.model.get("guid"))
+          childView.$el.hide()

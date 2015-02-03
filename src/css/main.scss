@@ -11,11 +11,31 @@
     opacity: 0;
   }
 }
+#page-content {
+  @include outer-container;
+}
+
+#sidebar {
+  @include span-columns(4);
+  li {
+    margin-bottom: 0.5em;
+  }
+  button {
+    font-size: 0.7em;
+    white-space: normal;
+    text-align: left;
+  }
+  li.active button {
+    background-color: #666;
+  }
+}
+
+#main {
+  @include span-columns(8);
+}
 
 #view-feed-view {
-  @include outer-container;
   article {
-    @include span-columns(12);
     background: #efefef;
     border: 1px solid #aaa;
     .item-info {
