@@ -82,4 +82,6 @@ define [
         @index()
 
     startOfDay: ->
-      moment().subtract(1, "days").startOf('day').toISOString()
+      # if Monday, go back to Friday
+      daysAgo = if moment().day() == 1 then 3 else 1
+      moment().subtract(daysAgo, "days").startOf("day").toISOString()
