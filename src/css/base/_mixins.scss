@@ -1,0 +1,17 @@
+// Ghost container psuedo element to help vertically center
+@mixin vert-center-children {
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+  }
+}
+
+@mixin centered-item {
+  margin-top:-4em;
+  position:relative;
+  display:inline-block;
+  vertical-align:middle;
+}
