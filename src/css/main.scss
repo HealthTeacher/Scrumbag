@@ -1,6 +1,8 @@
 @import "bourbon/bourbon";
 @import "base/base";
 @import "neat/neat";
+@import "page/loading";
+@import "page/get_api";
 
 #loader {
   position:relative;

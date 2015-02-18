@@ -1,0 +1,74 @@
+// =================================
+//
+//  Loading overlay
+//
+// =================================
+
+// Animation spin, for spinning loading indicators
+@include keyframes( spin ) {
+  from { @include transform( rotate(0deg) ); }
+  to { @include transform( rotate(359deg) ); }
+}
+
+.view-loading {
+  @include backface-visibility(hidden);
+  position:fixed;
+  top:0; right:0; bottom:0; left:0;
+  background:#fff;
+  background:#eee;
+  text-align:center;
+  z-index: 10;
+  @include vert-center-children;
+
+  .loading-wrapper {
+    @include centered-item;
+
+    h2 {
+      position:relative;
+      margin:0 0 1em;
+      z-index:1;
+      color:#000;
+    }
+  }
+}
+
+@include keyframes(dot-jump) {
+  0%     { @include transform(translate(0, 0)); }
+  22.5%  { @include transform(translate(0, 1.75em)); }
+  100%   { @include transform(translate(0, 1.75em)); }
+}
+
+.loading-spinner {
+  display:block;
+  width:100%;
+  margin:2em auto;
+
+  .dot-wrapper {
+    display:inline-block;
+
+    &:nth-of-type(2) {
+      @include animation-delay(0.75s);
+
+      .dot {
+        @include animation-delay(0.1s);
+      }
+    }
+
+    &:nth-of-type(3) {
+      @include animation-delay(1.2s);
+
+      .dot {
+        @include animation-delay(0.2s);
+      }
+    }
+  }
+
+  .dot {
+    display:inline-block;
+    margin:0 0.25em;
+    width:1em; height:1em;
+    border-radius:100em;
+    background:#477DCA;
+    @include animation(dot-jump 0.8s ease-in infinite alternate);
+  }
+}

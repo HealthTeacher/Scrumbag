@@ -1,0 +1,15 @@
+.api-token-form {
+  @include backface-visibility(hidden);
+  position:fixed;
+  top:0; right:0; bottom:0; left:0;
+  background:#fff;
+  text-align:center;
+  z-index: 10;
+  @include vert-center-children;
+
+  fieldset {
+    @include centered-item;
+    text-align:left;
+    width: 30em;
+  }
+}

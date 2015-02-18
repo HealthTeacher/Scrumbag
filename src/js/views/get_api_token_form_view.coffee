@@ -4,6 +4,7 @@ define [
 ], (App, tpl) ->
   Backbone.Marionette.ItemView.extend
     template: tpl
+    className: "api-token-form"
 
     ui:
       apiToken: "#js-api-token"

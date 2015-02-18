@@ -39,6 +39,12 @@ define [
     id: "view-feed-view"
     childView: FeedItemView
 
+    onRender: ->
+      @$el.css opacity: 0
+      @$el.animate
+        opacity: 1
+        duration: 450
+
     showAll: ->
       @children.each (childView) ->
         childView.$el.show()

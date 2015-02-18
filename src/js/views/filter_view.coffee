@@ -44,3 +44,9 @@ define [
           @trigger("filter-story", storyId)
         else
           @trigger("clear-filters")
+
+    onRender: ->
+      @$el.css opacity: 0
+      @$el.animate
+        opacity: 1
+        duration: 450

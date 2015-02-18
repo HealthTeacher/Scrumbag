@@ -3,12 +3,13 @@ define [
   "moment"
   "collections/activity_collection"
   "collections/project_memberships_collection"
+  "views/loading_view"
   "views/get_api_token_form_view"
   "views/feed_view"
   "views/filter_view"
   "hbs!templates/layout"
-], (App, moment, ActivityCollection, ProjectMembershipsCollection, GetApiTokenFormView, FeedView,
-  FilterView, tpl) ->
+], (App, moment, ActivityCollection, ProjectMembershipsCollection, LoadingView, GetApiTokenFormView,
+    FeedView, FilterView, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -29,9 +30,10 @@ define [
       memberships.projectId = 637543
 
       App.feed = feed = new ActivityCollection()
-
       feedView = @feedView = new FeedView(collection: feed)
-      @main_content.show(feedView)
+
+      loadingView = new LoadingView()
+      @main_content.show(loadingView)
 
       memberships.fetch
         beforeSend: (xhr) ->
@@ -47,6 +49,7 @@ define [
               xhr.setRequestHeader('X-TrackerToken', App.apiToken)
             success: (collection) =>
               @buildFilters()
+              @main_content.show(feedView)
             error: ->
               console.log("error!")
         error: ->
