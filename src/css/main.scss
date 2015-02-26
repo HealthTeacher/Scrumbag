@@ -14,7 +14,7 @@
   }
 }
 #page-content {
-  @include outer-container;
+  @include outer-container(80em);
 }
 
 #sidebar {
@@ -26,6 +26,7 @@
     font-size: 0.7em;
     white-space: normal;
     text-align: left;
+    width: 100%;
   }
   li.active button {
     background-color: #666;
