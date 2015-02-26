@@ -2,15 +2,14 @@ define [
   "app"
   "moment"
   "collections/activity_collection"
-  "collections/stories_collection"
   "collections/project_memberships_collection"
   "views/loading_view"
   "views/get_api_token_form_view"
   "views/feed_view"
   "views/filter_view"
   "hbs!templates/layout"
-], (App, moment, ActivityCollection, StoriesCollection, ProjectMembershipsCollection, LoadingView,
-    GetApiTokenFormView, FeedView, FilterView, tpl) ->
+], (App, moment, ActivityCollection, ProjectMembershipsCollection, LoadingView, GetApiTokenFormView,
+    FeedView, FilterView, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -29,7 +28,7 @@ define [
       App.users = new Backbone.Collection()
       App.memberships = new ProjectMembershipsCollection()
       App.feed = new ActivityCollection()
-      App.stories = new StoriesCollection()
+      App.stories = new Backbone.Collection()
 
       loadingView = new LoadingView()
       @main_content.show(loadingView)
