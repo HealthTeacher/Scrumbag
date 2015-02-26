@@ -46,11 +46,18 @@
     }
   }
 
-  h6 {
+  h6, em {
     margin-left: 0.5em;
   }
 
+  em {
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+
   ul.list-changes {
+    margin-bottom: 0.75em;
+
     li {
       @include outer-container;
     }

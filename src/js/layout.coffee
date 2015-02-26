@@ -2,14 +2,15 @@ define [
   "app"
   "moment"
   "collections/activity_collection"
+  "collections/stories_collection"
   "collections/project_memberships_collection"
   "views/loading_view"
   "views/get_api_token_form_view"
   "views/feed_view"
   "views/filter_view"
   "hbs!templates/layout"
-], (App, moment, ActivityCollection, ProjectMembershipsCollection, LoadingView, GetApiTokenFormView,
-    FeedView, FilterView, tpl) ->
+], (App, moment, ActivityCollection, StoriesCollection, ProjectMembershipsCollection, LoadingView,
+    GetApiTokenFormView, FeedView, FilterView, tpl) ->
   Marionette.LayoutView.extend
     template: tpl
 
@@ -25,42 +26,56 @@ define [
         @showProject(project)
 
     index: ->
-      App.memberships = memberships = new ProjectMembershipsCollection()
       App.users = new Backbone.Collection()
-      memberships.projectId = 637543
-
-      App.feed = feed = new ActivityCollection()
-      feedView = @feedView = new FeedView(collection: feed)
+      App.memberships = new ProjectMembershipsCollection()
+      App.feed = new ActivityCollection()
+      App.stories = new StoriesCollection()
 
       loadingView = new LoadingView()
       @main_content.show(loadingView)
 
-      memberships.fetch
+      App.memberships.fetch
         beforeSend: (xhr) ->
           xhr.setRequestHeader('X-TrackerToken', App.apiToken)
         success: (collection) =>
           people = collection.pluck("person")
           App.users.reset(people)
-          feed.fetch
+          App.feed.fetch
             data:
               occurred_after: @startOfDay()
               limit: 100
             beforeSend: (xhr) ->
               xhr.setRequestHeader('X-TrackerToken', App.apiToken)
             success: (collection) =>
+              @extractResources()
+              @buildActivity()
               @buildFilters()
-              @main_content.show(feedView)
             error: ->
               console.log("error!")
         error: ->
           console.log("error!")
 
-    buildFilters: ->
+    extractResources: ->
       resources = App.feed.pluck("primary_resources")
-      resources = _.flatten(resources)
-      stories = _(resources).select (resource) ->
+      @resources = _.flatten(resources)
+
+      stories = _(@resources).select (resource) ->
         resource.kind == "story"
-      filterCollection = new Backbone.Collection(stories)
+      @stories = _.uniq(stories, (story) -> story.id)
+
+    buildActivity: ->
+      _.each @stories, (story) ->
+        activity = App.feed.select (item) ->
+          primary_resources = item.get("primary_resources")
+          _.pluck(primary_resources, "id").indexOf(story.id) >= 0
+        story.activity = activity
+
+      App.stories.reset(@stories)
+      @feedView = new FeedView(collection: App.stories)
+      @main_content.show(@feedView)
+
+    buildFilters: ->
+      filterCollection = new Backbone.Collection(@stories)
       filterView = new FilterView(collection: filterCollection)
       @sidebar_content.show(filterView)
 
