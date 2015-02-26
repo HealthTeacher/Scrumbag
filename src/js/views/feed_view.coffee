@@ -16,10 +16,6 @@ define [
         when "chore" then "cog"
       data
 
-    templateHelpers: ->
-      occurredAt: ->
-        moment(@model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a")
-
     initialize: (opts) ->
       activity = @model.get("activity")
       @model.set("formatted_changes", ChangeFormatter.format(activity, App.users))
