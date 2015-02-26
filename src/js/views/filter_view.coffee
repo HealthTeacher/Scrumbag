@@ -5,7 +5,7 @@ define [
   FilterItemView = Backbone.Marionette.ItemView.extend
     tagName: "li"
     template: (serializedModel) ->
-      "<button>#{serializedModel.name} (#{serializedModel.count})</button>"
+      "<button>#{serializedModel.name}</button>"
 
     triggers:
       "click": "click"
@@ -20,12 +20,12 @@ define [
 
     toggle: ->
       @active = !@active
-      @activate() if @active
 
     activate: ->
       @$el.addClass("active")
 
     deactivate: ->
+      @active = false
       @$el.removeClass("active")
 
   Backbone.Marionette.CollectionView.extend
@@ -35,12 +35,17 @@ define [
 
     initialize: ->
       @on "childview:click", (childView, msg) ->
-        @children.each (child) -> child.deactivate()
+        @children.each (child) ->
+          child.deactivate() unless child == childView
+
         childView.toggle()
-        storyId = msg.model.get("id")
+
         if childView.active
+          childView.activate()
+          storyId = msg.model.get("id")
           @trigger("filter-story", storyId)
         else
+          childView.deactivate()
           @trigger("clear-filters")
 
     onRender: ->

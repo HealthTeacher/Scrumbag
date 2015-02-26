@@ -45,8 +45,6 @@ define [
 
     filterByStoryId: (storyId) ->
       @showAll()
-      items = App.feed.withStoryId(storyId)
-      ids = _(items).map (model) -> model.get("guid")
+      item = App.stories.findWhere(id: storyId)
       @children.each (childView) ->
-        unless _(ids).contains(childView.model.get("guid"))
-          childView.$el.hide()
+        childView.$el.hide() unless childView.model.id == item.id

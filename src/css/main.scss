@@ -15,6 +15,7 @@
 }
 #page-content {
   @include outer-container(80em);
+  padding: 2em 0;
 }
 
 #sidebar {
