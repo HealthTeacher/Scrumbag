@@ -11,11 +11,9 @@ define [
       "click": "click"
 
     templateHelpers:->
-      {
-        count: ->
-          items = App.feed.withStoryId(@model.id)
-          items.length
-      }
+      count: ->
+        items = App.feed.withStoryId(@model.id)
+        items.length
 
     initialize: (opts) ->
       @active = false

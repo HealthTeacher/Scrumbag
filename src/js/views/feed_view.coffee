@@ -20,11 +20,9 @@ define [
       serializedModel.story_summary = storyTpl(story)
       itemTpl(serializedModel)
 
-    templateHelpers:->
-      {
-        occurredAt: ->
-          moment(@model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a")
-      }
+    templateHelpers: ->
+      occurredAt: ->
+        moment(@model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a")
 
     initialize: (opts) ->
       @model.set("formatted_changes",
