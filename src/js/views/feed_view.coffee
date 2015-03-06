@@ -2,33 +2,23 @@ define [
   "app"
   "moment"
   "helpers/change_formatter"
-  "hbs!templates/feed/item"
-  "hbs!templates/feed/story"
-], (App, moment, ChangeFormatter, itemTpl, storyTpl) ->
+  "hbs!templates/feed_item"
+], (App, moment, ChangeFormatter, tpl) ->
 
   FeedItemView = Backbone.Marionette.ItemView.extend
-    template: (serializedModel) ->
-      story = serializedModel.primary_resources[0]
-      story.iconClass = switch story.story_type
-        when "feature"
-          "star"
-        when "bug"
-          "bug"
-        when "chore"
-          "cog"
+    template: tpl
 
-      serializedModel.story_summary = storyTpl(story)
-      itemTpl(serializedModel)
-
-    templateHelpers:->
-      {
-        occurredAt: ->
-          moment(@model.get("occurred_at")).format("dddd, MMMM Do YYYY, h:mm:ss a")
-      }
+    serializeData: ->
+      data = Marionette.ItemView.prototype.serializeData.apply(@)
+      data.iconClass = switch data.story_type
+        when "feature" then "star"
+        when "bug" then "bug"
+        when "chore" then "cog"
+      data
 
     initialize: (opts) ->
-      @model.set("formatted_changes",
-        ChangeFormatter.format(@model.get("changes"), App.users))
+      activity = @model.get("activity")
+      @model.set("formatted_changes", ChangeFormatter.format(activity, App.users))
 
     tagName: "article"
     className: ->
@@ -51,8 +41,6 @@ define [
 
     filterByStoryId: (storyId) ->
       @showAll()
-      items = App.feed.withStoryId(storyId)
-      ids = _(items).map (model) -> model.get("guid")
+      item = App.stories.findWhere(id: storyId)
       @children.each (childView) ->
-        unless _(ids).contains(childView.model.get("guid"))
-          childView.$el.hide()
+        childView.$el.hide() unless childView.model.id == item.id
